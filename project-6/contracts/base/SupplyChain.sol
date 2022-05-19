@@ -375,14 +375,14 @@ contract SupplyChain is
         emit Manufactured(_upc);
     }
 
-    // Define a function 'orderEquipment' that allows a EndUser to mark an item 'EquipmentOrdered'
-    function orderEquipment(uint256 _upc, address _auditorID)
+    // Define a function 'purchaseEquipment' that allows a EndUser to mark an item 'EquipmentOrdered'
+    function purchaseEquipment(uint256 _upc, address _auditorID)
         public
         payable
         onlyEndUser
         manufactured(_upc)
         paidEnough(items[_upc].productPrice)
-        checkValue(items[_upc].productPrice, items[_upc].enduserID)
+        checkValue(items[_upc].productPrice, msg.sender)
     {
         items[_upc].auditorID = payable(address(_auditorID));
         items[_upc].manufacturerID.transfer(items[_upc].productPrice);
@@ -727,8 +727,9 @@ contract SupplyChain is
             uint256 itemSKU,
             uint256 itemUPC,
             address ownerID,
-            address originManufacturerID,
-            string memory originManufacturerName,
+            address manufacturerID,
+            address auditorID,
+            address maintainerID,
             string memory originManufacturerInformation
         )
     {
@@ -738,8 +739,9 @@ contract SupplyChain is
             itemSKU = items[_upc].sku,
             itemUPC = items[_upc].upc,
             ownerID = items[_upc].ownerID,
-            originManufacturerID = items[_upc].originManufacturerID,
-            originManufacturerName = items[_upc].originManufacturerName,
+            manufacturerID = items[_upc].manufacturerID,
+            auditorID = items[_upc].auditorID,
+            maintainerID = items[_upc].maintainerID,
             originManufacturerInformation = items[_upc].originManufacturerInformation
         );
     }

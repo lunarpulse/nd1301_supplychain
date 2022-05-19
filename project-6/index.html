@@ -11,12 +11,27 @@
 
 <body>
     <div class="container">
-        <h1 style="text-align: center;">Fair Trade Coffee</h1>
+        <h1 style="text-align: center;"Transparent Equipment System</h1>
         <hr>
-        <p style="text-align: center;">Prove the authenticity of coffee using the Ethereum blockchain.</p>
+        <p style="text-align: center;">Prove the transparent equipment management using the Ethereum blockchain.</p>
     </div>
 
     <div id="ftc-harvest">
+        <h2>Role Management</h2>
+        <div class="form-group">
+            Assignee Address
+            <br>
+            <input type="text" id="assigneeID" name="assigneeID" value="0xf1b1bcd24dad92303dd9fe78be639f7bcf9c238d"
+                size="50">
+            <div class=button-div>
+                <button class="btn-addManufacturer" id="button" type="button" data-id="23">Assign manufacturer</button>
+                <button class="btn-addAuditor" id="button" type="button" data-id="24">Assign Auditor</button>
+                <button class="btn-addEnduser" id="button" type="button" data-id="25">Assign Enduser</button>
+                <button class="btn-addMaintainer" id="button" type="button" data-id="26">Assign Maintainer</button>
+            </div>
+        </div>
+        <div class=form-break></div>
+
         <h2>Product Overview</h2>
         <div class="form-group">
             SKU
@@ -29,64 +44,131 @@
             <br>
             <input type="text" id="ownerID" name="ownerID" value="0x963865f57804b38459dd4b2da2f760211a200438" size="50"><br>
             <div class=button-div>
-                <button class="btn-fetchOne" id="button" type="button" data-id="9">Fetch Data 1</button>
-                <button class="btn-fetchTwo" id="button" type="button" data-id="10">Fetch Data 2</button>
+                <button class="btn-fetchOne" id="button" type="button" data-id="27">Fetch Data 1</button>
+                <button class="btn-fetchTwo" id="button" type="button" data-id="28">Fetch Data 2</button>
             </div>
         </div>
         <div class=form-break></div>
-        <h2>Farm Details</h2>
-        <div class="form-group">
-            Farmer ID
-            <br>
-            <input type="text" id="originFarmerID" name="originFarmerID" value="0x99c289eb2aacec289631a5ddf62cf27a63d4494f"
-                size="50"><br>
-            Farm Name
-            <br>
-            <input type="text" id="originFarmName" name="originFarmName" value="John Doe"><br>
-            Farm Information
-            <br>
-            <input type="text" id="originFarmInformation" name="originFarmInformation" value="Yarra Valley"><br>
-            Farm Latitude
-            <br>
-            <input type="text" id="originFarmLatitude" name="originFarmLatitude" value="-38.239770"><br>
-            Farm Longitude
-            <br>
-            <input type="text" id="originFarmLongitude" name="originFarmLongitude" value="144.341490"><br>
-            <br>
-            <button class="btn-harvest" id="button" type="button" data-id="1">Harvest</button>
-            <button class="btn-process" id="button" type="button" data-id="2">Process</button>
-            <button class="btn-pack" id="button" type="button" data-id="3">Pack</button>
-            <button class="btn-forsale" id="button" type="button" data-id="4">ForSale</button>
-        </div>
-        <div class=form-break></div>
+
         <h2>Product Details</h2>
         <div class="form-group">
+            Original Manufacturer ID
+            <br>
+            <input type="text" id="originManufacturererID" name="originManufacturererID" value="0x99c289eb2aacec289631a5ddf62cf27a63d4494f"
+                size="50"><br>
+            Original Manufacturer Name
+            <br>
+            <input type="text" id="originManufacturerName" name="originManufacturerName" value="John Doe"><br>
+            Original Manufacturer Information
+            <br>
             Product Notes
             <br>
             <input type="text" id="productNotes" name="productNotes" value="Best beans for Espresso" size="60"><br>
             Product Price
             <br>
             <input type="number" id="productPrice" name="productPrice" value=1>ETH<br>
-            Distributor ID
-            <br>
-            <input type="text" id="distributorID" name="distributorID" value="0xf1b1bcd24dad92303dd9fe78be639f7bcf9c238d"
-                size="50">
-            <br>
-            Retailer ID
-            <br>
-            <input type="text" id="retailerID" name="retailerID" value="0x0fb2bfefd526966c87efa19f6693d50971763fc2"
-                size="50"><br>
-            Distributor ID
-            <br>
-            <input type="text" id="consumerID" name="consumerID" value="0x5d777e9127b28fb119e81a6304278a0a21bef1c4"
-                size="50"><br>
-            <br>
-            <button class="btn-buy" id="button" type="button" data-id="5">Buy</button>
-            <button class="btn-ship" id="button" type="button" data-id="6">Ship</button>
-            <button class="btn-receive" id="button" type="button" data-id="7">Receive</button>
-            <button class="btn-purchase" id="button" type="button" data-id="8">Purchase</button>
         </div>
         <div class=form-break></div>
+
+        <h2>Manufacturer Details</h2>
+        <div class="form-group">
+            Manufacturer ID
+            <br>
+            <input type="text" id="manufacturerID" name="manufacturerID" value="0x254e190217392ed7ebec1ed775b1eb691e4aee80"
+                size="50"><br>
+            <input type="text" id="originManufacturerInformation" name="originManufacturerInformation" value="Yarra Valley"><br>
+            <br>
+            <button class="btn-createEquipment" id="button" type="button" data-id="1">Create</button>
+            <button class="btn-manufactureEquipment" id="button" type="button" data-id="2">Manufacture</button>
+            <button class="btn-modifyEquipment" id="button" type="button" data-id="3">Modify Equipment</button>
+            <button class="btn-requestCertification" id="button" type="button" data-id="4">Request Certification</button>
+            <button class="btn-shipEquipment" id="button" type="button" data-id="5">Ship Equipment</button>
+        </div>
+        <div class=form-break></div>
+
+        <h2>Inspector Details</h2>
+        <div class="form-group">
+            Auditor ID
+            <br>
+            <input type="text" id="auditorID" name="auditorID" value="0x0a5e280b9db7459c0646023ad4dc26b75ed9b9d4"
+                size="50">
+            <br>
+            Certification Note
+            <br>
+            <input type="text" id="certificationNotes" name="certificationNotes" value="Proudly Certified." size="60"><br>
+            <br>
+            Inspection Note
+            <br>
+            <input type="text" id="inspectionNotes" name="inspectionNotes" value="All good well done." size="60"><br>
+            <br>
+            Quote Maintenance Cost
+            <br>
+            <input type="text" id="quoteMaintenaceCost" name="quoteMaintenaceCost" value="123" size="60"><br>
+            <br>
+            Quote Maintenance Fee   
+            <br>
+            <input type="text" id="quoteMaintenaceFee" name="quoteMaintenaceFee" value="12" size="60"><br>
+            <br>
+            Quote Maintenance Note
+            <br>
+            <input type="text" id="quoteMaintenanceNote" name="quoteMaintenanceNote" value="Easy fix." size="60"><br>
+            Maintenance inspection passed?
+            <br>
+            <input type="text" id="maintenanceInspection" name="maintenanceInspection" value="true" size="60"><br>
+            <button class="btn-requestModification" id="button" type="button" data-id="6">Request Modification</button>
+            <button class="btn-inspectEquipment" id="button" type="button" data-id="7">Inspect Equipment Manufactured</button>
+            <button class="btn-rejectCertification" id="button" type="button" data-id="8">Reject Certification</button>
+            <button class="btn-certifyEquipment" id="button" type="button" data-id="9">Certify Equipment</button>
+            <button class="btn-quoteMaintenace" id="button" type="button" data-id="10">Quote Maintenace</button>
+            <button class="btn-requireRepair" id="button" type="button" data-id="11">Require Repair</button>
+            <button class="btn-inspectEquipmentMaintainance" id="button" type="button" data-id="12">Inspect Equipment Maintainance</button>
+        </div>
+        <div class=form-break></div>
+
+        <h2>Enduser Details</h2>
+        <div class="form-group">
+            Enduser ID
+            <br>
+            <input type="text" id="endUserID" name="endUserID" value="0xa6af734a71057e846920657c60967b3ff20dda2f"
+                size="50">
+            <br>
+            Purchase Value
+            <br>
+            <input type="text" id="purchaseValue" name="purchaseValue" value="1500"
+                size="50">
+            <br>
+            MaintenanceQoute Cost and Fee
+            <br>
+            <input type="text" id="maintenanceQouteCostFee" name="maintenanceQouteCostFee" value="3000"
+                size="50">
+            <br>
+            <button class="btn-orderEquipment" id="button" type="button" data-id="13">Order Equipment</button>
+            <button class="btn-receiveEquipment" id="button" type="button" data-id="14">Receive Equipment</button>
+            <button class="btn-commissioningEquipment" id="button" type="button" data-id="15">Commission Equipment</button>
+            <button class="btn-utilseEquipment" id="button" type="button" data-id="16">Utilse Equipment</button>
+            <button class="btn-orderMaintainance" id="button" type="button" data-id="17">Order Maintainance</button>
+            <button class="btn-rejectMaintenanceQoute" id="button" type="button" data-id="18">reject MaintenanceQoute</button>
+            <button class="btn-payMaintenanceQuote" id="button" type="button" data-id="19">Pay MaintenanceQuote</button>
+        </div>
+        <div class=form-break></div>
+
+        <h2>Maintainer Details</h2>
+        <div class="form-group">
+            Maintainer ID
+            <br>
+            <input type="text" id="maintainerID" name="maintainerID" value="0x8c2325038b3a37c39aa97663edfa9af54a944cd4"
+                size="50">
+            <br>
+            Maintenance Notes
+            <br>
+            <input type="text" id="maintenanceNotes" name="maintenanceNotes" value="All fixed." size="60"><br>
+           
+            <button class="btn-repairEquipment" id="button" type="button" data-id="20">Repair Equipment</button>
+            <button class="btn-requestInspection" id="button" type="button" data-id="21">Request Inspection</button>
+            <button class="btn-shipEquipmentMaintainer" id="button" type="button" data-id="22">Ship EquipmentMaintainer</button>
+        </div>
+        <div class=form-break></div>
+
         <hr>
     </div>
 
@@ -100,9 +182,9 @@
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <!-- <script src="js/web3.min.js"></script> -->
-    <script src="js/truffle-contract.js"></script>
-    <script src="js/app.js"></script>
+    <script src="js/web3.min.js"></script>
+    <script src="src/js/truffle-contract.js"></script>
+    <script src="src/js/app.js"></script>
 </body>
 
 </html>

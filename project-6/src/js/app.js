@@ -5,18 +5,17 @@ App = {
     sku: 0,
     upc: 0,
     metamaskAccountID: "0x0000000000000000000000000000000000000000",
-    ownerID: "0x0000000000000000000000000000000000000000",
-    originFarmerID: "0x0000000000000000000000000000000000000000",
-    originFarmName: null,
-    originFarmInformation: null,
-    originFarmLatitude: null,
-    originFarmLongitude: null,
+    ownerID: "0x1A58e72531E280634E53544Da05111D41303c09E",
+    originManufacturererID: "0x1A58e72531E280634E53544Da05111D41303c09E",
+    originManufacturerName: null,
+    originManufacturerInformation: null,
     productNotes: null,
     productPrice: 0,
-    distributorID: "0x0000000000000000000000000000000000000000",
-    retailerID: "0x0000000000000000000000000000000000000000",
-    consumerID: "0x0000000000000000000000000000000000000000",
-
+    manufacturerID: "0xe75B532b11318E2b5f3424d9C82065eF422BaaB9",
+    auditorID: "0xe6B1b9e1661565257A9072bC1075443284343F5F",
+    maintainerID: "0x465D859585c1104a38De900C775245e9861049E4",
+    endUserID: "0x5dA886443Ca7e9d9B70892D72975E685325d7A37",
+    assigneeID: "",
     init: async function () {
         App.readForm();
         /// Setup access to blockchain
@@ -27,31 +26,44 @@ App = {
         App.sku = $("#sku").val();
         App.upc = $("#upc").val();
         App.ownerID = $("#ownerID").val();
-        App.originFarmerID = $("#originFarmerID").val();
-        App.originFarmName = $("#originFarmName").val();
-        App.originFarmInformation = $("#originFarmInformation").val();
-        App.originFarmLatitude = $("#originFarmLatitude").val();
-        App.originFarmLongitude = $("#originFarmLongitude").val();
+        App.originManufacturererID = $("#originManufacturererID").val();
+        App.originManufacturerName = $("#originManufacturerName").val();
+        App.originManufacturerInformation = $("#originManufacturerInformation").val();
         App.productNotes = $("#productNotes").val();
         App.productPrice = $("#productPrice").val();
-        App.distributorID = $("#distributorID").val();
-        App.retailerID = $("#retailerID").val();
-        App.consumerID = $("#consumerID").val();
-
+        App.auditorID = $("#auditorID").val();
+        App.endUserID = $("#endUserID").val();
+        App.manufacturerID = $("#manufacturerID").val();
+        App.maintainerID = $("#maintainerID").val();
+        App.certificationNotes =  $("#certificationNotes").val();
+        App.quoteMaintenaceCost= $("#quoteMaintenaceCost").val() ;
+        App.quoteMaintenaceFee = $("#quoteMaintenaceFee").val();
+        App.quoteMaintenanceNote = $("#quoteMaintenanceNote").val();
+        App.maintenanceInspection = $("#maintenanceInspection").val();
+        App.purchaseValue = $("#purchaseValue").val();
+        App.maintenanceQouteCostFee = $("#maintenanceQouteCostFee").val();
+        App.assigneeID = $("#assigneeID").val();
         console.log(
             App.sku,
             App.upc,
             App.ownerID, 
-            App.originFarmerID, 
-            App.originFarmName, 
-            App.originFarmInformation, 
-            App.originFarmLatitude, 
-            App.originFarmLongitude, 
+            App.originManufacturererID, 
+            App.originManufacturerName, 
+            App.originManufacturerInformation,
             App.productNotes, 
             App.productPrice, 
-            App.distributorID, 
-            App.retailerID, 
-            App.consumerID
+            App.auditorID, 
+            App.endUserID,
+            App.maintainerID,
+            App.manufacturerID,
+            App.purchaseValue,
+            App.certificationNotes,
+            App.quoteMaintenanceNote,
+            App.maintenanceInspection,
+            App.quoteMaintenaceFee,
+            App.quoteMaintenaceCost,
+            App.maintenanceQouteCostFee,
+            App.assigneeID
         );
     },
 
@@ -74,7 +86,7 @@ App = {
         }
         // If no injected web3 instance is detected, fall back to Ganache
         else {
-            App.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
+            App.web3Provider = new Web3.providers.HttpProvider('http://192.168.1.118:8545');
         }
 
         App.getMetaskAccountID();
@@ -123,164 +135,476 @@ App = {
 
     handleButtonClick: async function(event) {
         event.preventDefault();
-
+        App.readForm();
         App.getMetaskAccountID();
-
+        
         var processId = parseInt($(event.target).data('id'));
         console.log('processId',processId);
 
         switch(processId) {
             case 1:
-                return await App.harvestItem(event);
+                return await App.createEquipment(event);
                 break;
             case 2:
-                return await App.processItem(event);
+                return await App.manufactureEquipment(event);
                 break;
             case 3:
-                return await App.packItem(event);
+                return await App.modifyEquipment(event);
                 break;
             case 4:
-                return await App.sellItem(event);
+                return await App.requestCertification(event);
                 break;
             case 5:
-                return await App.buyItem(event);
+                return await App.shipEquipment(event);
                 break;
             case 6:
-                return await App.shipItem(event);
+                return await App.requestModification(event);
                 break;
             case 7:
-                return await App.receiveItem(event);
+                return await App.inspectEquipment(event);
                 break;
             case 8:
-                return await App.purchaseItem(event);
+                return await App.rejectCertification(event);
                 break;
             case 9:
-                return await App.fetchItemBufferOne(event);
+                return await App.certifyEquipment(event);
                 break;
             case 10:
+                return await App.quoteMaintenace(event);
+                break;
+            case 11:
+                return await App.requireRepair(event);
+                break;
+            case 12:
+                return await App.inspectEquipmentMaintainance(event);
+                break;
+            case 13:
+                return await App.purchaseEquipment(event);
+                break;
+            case 14:
+                return await App.receiveEquipment(event);
+                break;
+            case 15:
+                return await App.commissioningEquipment(event);
+                break;
+            case 16:
+                return await App.utilseEquipment(event);
+                break;
+            case 17:
+                return await App.orderMaintainance(event);
+                break;
+            case 18:
+                return await App.rejectMaintenanceQoute(event);
+                break;
+            case 19:
+                return await App.payMaintenanceQuote(event);
+                break;
+            case 20:
+                return await App.repairEquipment(event);
+                break;
+            case 21:
+                return await App.requestInspection(event);
+                break;
+            case 22:
+                return await App.shipEquipmentMaintainer(event);
+                break;
+            case 23:
+                return await App.addManufacturer(event);
+                break;
+            case 24:
+                return await App.addAuditor(event);
+                break;
+            case 25:
+                return await App.addEndUser(event);
+                break;
+            case 26:
+                return await App.addMaintainer(event);
+                break;
+            case 27:
+                return await App.fetchItemBufferOne(event);
+                break;
+            case 28:
                 return await App.fetchItemBufferTwo(event);
                 break;
             }
     },
 
-    harvestItem: function(event) {
+    createEquipment: function(event) {
+        console.log('createEquipment started');
         event.preventDefault();
         var processId = parseInt($(event.target).data('id'));
 
         App.contracts.SupplyChain.deployed().then(function(instance) {
-            return instance.harvestItem(
+            return instance.createEquipment(
                 App.upc, 
-                App.metamaskAccountID, 
-                App.originFarmName, 
-                App.originFarmInformation, 
-                App.originFarmLatitude, 
-                App.originFarmLongitude, 
-                App.productNotes
+                App.manufacturerID, 
+                App.originManufacturerName, 
+                App.originManufacturerInformation,
+                App.productNotes,
+                App.productPrice, {from: App.metamaskAccountID}
             );
         }).then(function(result) {
             $("#ftc-item").text(result);
-            console.log('harvestItem',result);
+            console.log('createEquipment',result);
         }).catch(function(err) {
             console.log(err.message);
         });
+        console.log('createEquipment finished');
     },
 
-    processItem: function (event) {
+    manufactureEquipment: function (event) {
         event.preventDefault();
         var processId = parseInt($(event.target).data('id'));
 
         App.contracts.SupplyChain.deployed().then(function(instance) {
-            return instance.processItem(App.upc, {from: App.metamaskAccountID});
+            return instance.manufactureEquipment(App.upc, {from: App.metamaskAccountID});
         }).then(function(result) {
             $("#ftc-item").text(result);
-            console.log('processItem',result);
+            console.log('manufactureEquipment',result);
         }).catch(function(err) {
             console.log(err.message);
         });
     },
     
-    packItem: function (event) {
+    modifyEquipment: function (event) {
         event.preventDefault();
         var processId = parseInt($(event.target).data('id'));
 
         App.contracts.SupplyChain.deployed().then(function(instance) {
-            return instance.packItem(App.upc, {from: App.metamaskAccountID});
+            return instance.modifyEquipment(App.upc, {from: App.metamaskAccountID});
         }).then(function(result) {
             $("#ftc-item").text(result);
-            console.log('packItem',result);
+            console.log('modifyEquipment',result);
+        }).catch(function(err) {
+            console.log(err.message);
+        });
+    },
+    
+    requestCertification: function (event) {
+        event.preventDefault();
+        var processId = parseInt($(event.target).data('id'));
+
+        App.contracts.SupplyChain.deployed().then(function(instance) {
+            return instance.requestCertification(App.upc, {from: App.metamaskAccountID});
+        }).then(function(result) {
+            $("#ftc-item").text(result);
+            console.log('requestCertification',result);
         }).catch(function(err) {
             console.log(err.message);
         });
     },
 
-    sellItem: function (event) {
+    shipEquipment: function (event) {
         event.preventDefault();
         var processId = parseInt($(event.target).data('id'));
 
         App.contracts.SupplyChain.deployed().then(function(instance) {
-            const productPrice = web3.toWei(1, "ether");
-            console.log('productPrice',productPrice);
-            return instance.sellItem(App.upc, App.productPrice, {from: App.metamaskAccountID});
+            return instance.shipEquipment(App.upc, {from: App.metamaskAccountID});
         }).then(function(result) {
             $("#ftc-item").text(result);
-            console.log('sellItem',result);
+            console.log('shipEquipment',result);
         }).catch(function(err) {
             console.log(err.message);
         });
     },
 
-    buyItem: function (event) {
+    requestModification: function (event) {
         event.preventDefault();
         var processId = parseInt($(event.target).data('id'));
 
         App.contracts.SupplyChain.deployed().then(function(instance) {
-            const walletValue = web3.toWei(3, "ether");
-            return instance.buyItem(App.upc, {from: App.metamaskAccountID, value: walletValue});
+            return instance.requestModification(App.upc, {from: App.metamaskAccountID});
         }).then(function(result) {
             $("#ftc-item").text(result);
-            console.log('buyItem',result);
+            console.log('requestModification',result);
         }).catch(function(err) {
             console.log(err.message);
         });
     },
 
-    shipItem: function (event) {
+    inspectEquipment: function (event) {
         event.preventDefault();
         var processId = parseInt($(event.target).data('id'));
 
         App.contracts.SupplyChain.deployed().then(function(instance) {
-            return instance.shipItem(App.upc, {from: App.metamaskAccountID});
+            return instance.inspectEquipment(App.upc, {from: App.metamaskAccountID});
         }).then(function(result) {
             $("#ftc-item").text(result);
-            console.log('shipItem',result);
+            console.log('inspectEquipment',result);
         }).catch(function(err) {
             console.log(err.message);
         });
     },
 
-    receiveItem: function (event) {
+    rejectCertification: function (event) {
         event.preventDefault();
         var processId = parseInt($(event.target).data('id'));
 
         App.contracts.SupplyChain.deployed().then(function(instance) {
-            return instance.receiveItem(App.upc, {from: App.metamaskAccountID});
+            return instance.rejectCertification(App.upc, {from: App.metamaskAccountID});
         }).then(function(result) {
             $("#ftc-item").text(result);
-            console.log('receiveItem',result);
+            console.log('rejectCertification',result);
         }).catch(function(err) {
             console.log(err.message);
         });
     },
 
-    purchaseItem: function (event) {
+    certifyEquipment: function (event) {
         event.preventDefault();
         var processId = parseInt($(event.target).data('id'));
 
         App.contracts.SupplyChain.deployed().then(function(instance) {
-            return instance.purchaseItem(App.upc, {from: App.metamaskAccountID});
+            return instance.certifyEquipment(App.upc, App.certificationNotes, {from: App.metamaskAccountID});
         }).then(function(result) {
             $("#ftc-item").text(result);
-            console.log('purchaseItem',result);
+            console.log('certifyEquipment',result);
+        }).catch(function(err) {
+            console.log(err.message);
+        });
+    },
+
+    quoteMaintenace: function (event) {
+        event.preventDefault();
+        var processId = parseInt($(event.target).data('id'));
+
+        App.contracts.SupplyChain.deployed().then(function(instance) {
+            return instance.quoteMaintenace(App.upc, App.quoteMaintenaceCost, App.quoteMaintenaceFee, App.quoteMaintenanceNote, {from: App.metamaskAccountID});
+        }).then(function(result) {
+            $("#ftc-item").text(result);
+            console.log('quoteMaintenace',result);
+        }).catch(function(err) {
+            console.log(err.message);
+        });
+    },
+
+    requireRepair: function (event) {
+        event.preventDefault();
+        var processId = parseInt($(event.target).data('id'));
+
+        App.contracts.SupplyChain.deployed().then(function(instance) {
+            return instance.requireRepair(App.upc, {from: App.metamaskAccountID});
+        }).then(function(result) {
+            $("#ftc-item").text(result);
+            console.log('requireRepair',result);
+        }).catch(function(err) {
+            console.log(err.message);
+        });
+    },
+
+    inspectEquipmentMaintainance: function (event) {
+        event.preventDefault();
+        var processId = parseInt($(event.target).data('id'));
+
+        App.contracts.SupplyChain.deployed().then(function(instance) {
+            return instance.inspectEquipmentMaintainance(App.upc, (App.maintenanceInspection === 'true'), {from: App.metamaskAccountID});
+        }).then(function(result) {
+            $("#ftc-item").text(result);
+            console.log('inspectEquipmentMaintainance',result);
+        }).catch(function(err) {
+            console.log(err.message);
+        });
+    },
+
+    purchaseEquipment: function (event) {
+        event.preventDefault();
+        var processId = parseInt($(event.target).data('id'));
+
+        console.log('args',
+        App.upc, 
+        App.manufacturerID, 
+        App.auditorID, 
+        App.endUserID, 
+        App.metamaskAccountID);
+
+        const walletValue = web3.toWei(3, "ether");
+        App.contracts.SupplyChain.deployed().then(function(instance) {
+            return instance.purchaseEquipment(App.upc, App.auditorID, {from: App.metamaskAccountID, value: App.purchaseValue});
+        }).then(function(result) {
+            $("#ftc-item").text(result);
+            console.log('purchaseEquipment',result);
+        }).catch(function(err) {
+            console.log(err.message);
+        });
+    },
+    
+    receiveEquipment: function (event) {
+        event.preventDefault();
+        var processId = parseInt($(event.target).data('id'));
+
+        App.contracts.SupplyChain.deployed().then(function(instance) {
+            return instance.receiveEquipment(App.upc, {from: App.metamaskAccountID});
+        }).then(function(result) {
+            $("#ftc-item").text(result);
+            console.log('receiveEquipment',result);
+        }).catch(function(err) {
+            console.log(err.message);
+        });
+    },
+    
+    commissioningEquipment: function (event) {
+        event.preventDefault();
+        var processId = parseInt($(event.target).data('id'));
+
+        App.contracts.SupplyChain.deployed().then(function(instance) {
+            return instance.commissioningEquipment(App.upc, {from: App.metamaskAccountID});
+        }).then(function(result) {
+            $("#ftc-item").text(result);
+            console.log('commissioningEquipment',result);
+        }).catch(function(err) {
+            console.log(err.message);
+        });
+    },
+    
+    utilseEquipment: function (event) {
+        event.preventDefault();
+        var processId = parseInt($(event.target).data('id'));
+
+        App.contracts.SupplyChain.deployed().then(function(instance) {
+            return instance.utilseEquipment(App.upc, {from: App.metamaskAccountID});
+        }).then(function(result) {
+            $("#ftc-item").text(result);
+            console.log('utilseEquipment',result);
+        }).catch(function(err) {
+            console.log(err.message);
+        });
+    },
+    
+    orderMaintainance: function (event) {
+        event.preventDefault();
+        var processId = parseInt($(event.target).data('id'));
+
+        App.contracts.SupplyChain.deployed().then(function(instance) {
+            return instance.orderMaintainance(App.upc, App.maintainerID, App.auditorID, {from: App.metamaskAccountID});
+        }).then(function(result) {
+            $("#ftc-item").text(result);
+            console.log('orderMaintainance',result);
+        }).catch(function(err) {
+            console.log(err.message);
+        });
+    },
+    
+    rejectMaintenanceQoute: function (event) {
+        event.preventDefault();
+        var processId = parseInt($(event.target).data('id'));
+
+        App.contracts.SupplyChain.deployed().then(function(instance) {
+            return instance.rejectMaintenanceQoute(App.upc, {from: App.metamaskAccountID, value: App.maintenanceQouteCostFee});
+        }).then(function(result) {
+            $("#ftc-item").text(result);
+            console.log('rejectMaintenanceQoute',result);
+        }).catch(function(err) {
+            console.log(err.message);
+        });
+    },
+
+    payMaintenanceQuote: function (event) {
+        event.preventDefault();
+        var processId = parseInt($(event.target).data('id'));
+
+        App.contracts.SupplyChain.deployed().then(function(instance) {
+            return instance.payMaintenanceQuote(App.upc, {from: App.metamaskAccountID, value: App.maintenanceQouteCostFee});
+        }).then(function(result) {
+            $("#ftc-item").text(result);
+            console.log('payMaintenanceQuote',result);
+        }).catch(function(err) {
+            console.log(err.message);
+        });
+    },
+    
+    repairEquipment: function (event) {
+        event.preventDefault();
+        var processId = parseInt($(event.target).data('id'));
+
+        App.contracts.SupplyChain.deployed().then(function(instance) {
+            return instance.repairEquipment(App.upc, {from: App.metamaskAccountID});
+        }).then(function(result) {
+            $("#ftc-item").text(result);
+            console.log('repairEquipment',result);
+        }).catch(function(err) {
+            console.log(err.message);
+        });
+    },
+
+    requestInspection: function (event) {
+        event.preventDefault();
+        var processId = parseInt($(event.target).data('id'));
+
+        App.contracts.SupplyChain.deployed().then(function(instance) {
+            return instance.requestInspection(App.upc, {from: App.metamaskAccountID});
+        }).then(function(result) {
+            $("#ftc-item").text(result);
+            console.log('requestInspection',result);
+        }).catch(function(err) {
+            console.log(err.message);
+        });
+    },
+
+    shipEquipmentMaintainer: function (event) {
+        event.preventDefault();
+        var processId = parseInt($(event.target).data('id'));
+
+        App.contracts.SupplyChain.deployed().then(function(instance) {
+            return instance.shipEquipmentMaintainer(App.upc, {from: App.metamaskAccountID});
+        }).then(function(result) {
+            $("#ftc-item").text(result);
+            console.log('shipEquipmentMaintainer',result);
+        }).catch(function(err) {
+            console.log(err.message);
+        });
+    },
+
+    addManufacturer: function (event) {
+        event.preventDefault();
+        var processId = parseInt($(event.target).data('id'));
+
+        App.contracts.SupplyChain.deployed().then(function(instance) {
+            return instance.addManufacturer(App.assigneeID, {from: App.metamaskAccountID});
+        }).then(function(result) {
+            $("#ftc-item").text(result);
+            console.log('addManufacturer',result);
+        }).catch(function(err) {
+            console.log(err.message);
+        });
+    },
+
+    addAuditor: function (event) {
+        event.preventDefault();
+        var processId = parseInt($(event.target).data('id'));
+
+        App.contracts.SupplyChain.deployed().then(function(instance) {
+            return instance.addAuditor(App.assigneeID, {from: App.metamaskAccountID});
+        }).then(function(result) {
+            $("#ftc-item").text(result);
+            console.log('addAuditor',result);
+        }).catch(function(err) {
+            console.log(err.message);
+        });
+    },
+
+    addEndUser: function (event) {
+        event.preventDefault();
+        var processId = parseInt($(event.target).data('id'));
+
+        App.contracts.SupplyChain.deployed().then(function(instance) {
+            return instance.addEndUser(App.assigneeID, {from: App.metamaskAccountID});
+        }).then(function(result) {
+            $("#ftc-item").text(result);
+            console.log('addEndUser',result);
+        }).catch(function(err) {
+            console.log(err.message);
+        });
+    },
+
+    addMaintainer: function (event) {
+        event.preventDefault();
+        var processId = parseInt($(event.target).data('id'));
+
+        App.contracts.SupplyChain.deployed().then(function(instance) {
+            return instance.addMaintainer(App.assigneeID, {from: App.metamaskAccountID});
+        }).then(function(result) {
+            $("#ftc-item").text(result);
+            console.log('addMaintainer',result);
         }).catch(function(err) {
             console.log(err.message);
         });
@@ -293,7 +617,8 @@ App = {
         console.log('upc',App.upc);
 
         App.contracts.SupplyChain.deployed().then(function(instance) {
-          return instance.fetchItemBufferOne(App.upc);
+            //return instance.isManufacturer(App.auditorID, {from: App.metamaskAccountID});
+            return instance.fetchItemBufferOne(App.upc);
         }).then(function(result) {
           $("#ftc-item").text(result);
           console.log('fetchItemBufferOne', result);
@@ -305,7 +630,9 @@ App = {
     fetchItemBufferTwo: function () {
     ///    event.preventDefault();
     ///    var processId = parseInt($(event.target).data('id'));
-                        
+        App.upc = $('#upc').val();
+        console.log('upc',App.upc);
+
         App.contracts.SupplyChain.deployed().then(function(instance) {
           return instance.fetchItemBufferTwo.call(App.upc);
         }).then(function(result) {
